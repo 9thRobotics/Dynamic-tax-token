@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract DynamicTaxToken {
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
+contract DynamicTaxToken is ReentrancyGuard {
     string public name = "DynamicTaxToken";
     string public symbol = "DTT";
     uint8 public decimals = 18;
@@ -47,6 +49,7 @@ contract DynamicTaxToken {
     function transfer(address recipient, uint256 amount)
         public
         dynamicTax(msg.sender, recipient, amount)
+        nonReentrant
         returns (bool)
     {
         require(balanceOf[msg.sender] >= amount, "Insufficient balance");
